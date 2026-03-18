@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="56" height="56">
+  <!-- Pin 1 (left, lighter purple) -->
+  <path d="M17 2 C8.7 2 2 8.7 2 17 C2 27.8 17 46 17 46 C17 46 32 27.8 32 17 C32 8.7 25.3 2 17 2Z" fill="#9C96FF"/>
+  <circle cx="17" cy="17" r="6.5" fill="white"/>
+  <!-- Pin 2 (right, main purple) -->
+  <path d="M39 2 C30.7 2 24 8.7 24 17 C24 27.8 39 46 39 46 C39 46 54 27.8 54 17 C54 8.7 47.3 2 39 2Z" fill="#6C63FF"/>
+  <circle cx="39" cy="17" r="6.5" fill="white"/>
+</svg>
