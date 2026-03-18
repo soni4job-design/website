@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meopel Admin</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+    /* Login */
+    #login { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.1); width: 340px; }
+    .login-card h1 { font-size: 22px; margin-bottom: 8px; }
+    .login-card p { color: #666; margin-bottom: 24px; font-size: 14px; }
+
+    /* App */
+    #app { display: none; }
+    header { background: white; border-bottom: 1px solid #e0e0e0; padding: 0 24px; display: flex; align-items: center; gap: 16px; height: 56px; }
+    header h1 { font-size: 18px; font-weight: 700; }
+    header span { font-size: 13px; color: #666; }
+    .logout-btn { margin-left: auto; }
+
+    main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; margin-bottom: 24px; background: white; padding: 6px; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); width: fit-content; }
+    .tab { padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 500; background: transparent; color: #666; }
+    .tab.active { background: #6750A4; color: white; }
+
+    /* Plan cards */
+    .plan-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .plan-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+    .plan-title { font-size: 17px; font-weight: 700; flex: 1; }
+    .badge { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-open { background: #e8f5e9; color: #2e7d32; }
+    .badge-matched { background: #e3f2fd; color: #1565c0; }
+    .plan-meta { font-size: 13px; color: #666; display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+    .plan-meta span { display: flex; align-items: center; gap: 4px; }
+
+    /* Requests */
+    .section-label { font-size: 13px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .request-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: #fafafa; border-radius: 10px; margin-bottom: 8px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #666; flex-shrink: 0; }
+    .request-info { flex: 1; }
+    .request-name { font-weight: 600; font-size: 14px; }
+    .request-sub { font-size: 12px; color: #888; }
+    .request-status { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 6px; }
+    .status-pending { background: #fff3e0; color: #e65100; }
+    .status-accepted { background: #e8f5e9; color: #2e7d32; }
+    .status-rejected { background: #ffebee; color: #c62828; }
+
+    /* Forms and inputs */
+    input[type="password"], input[type="text"] { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; outline: none; transition: border 0.2s; }
+    input:focus { border-color: #6750A4; }
+
+    /* Buttons */
+    button { cursor: pointer; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; padding: 8px 16px; transition: opacity 0.15s; }
+    button:hover { opacity: 0.85; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary { background: #6750A4; color: white; }
+    .btn-accept { background: #2e7d32; color: white; }
+    .btn-reject { background: #c62828; color: white; }
+    .btn-cancel { background: #666; color: white; }
+    .btn-sm { padding: 5px 12px; font-size: 13px; }
+    .btn-full { width: 100%; padding: 13px; font-size: 15px; margin-top: 12px; }
+
+    /* Occasion form */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 13px; color: #555; font-weight: 500; }
+    .form-group input, .form-group select { padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+    .form-group input:focus, .form-group select:focus { border-color: #6750A4; }
+    .form-full { grid-column: 1 / -1; }
+
+    .empty { text-align: center; padding: 48px; color: #888; font-size: 15px; }
+    .loading { text-align: center; padding: 48px; color: #888; }
+    .error-msg { color: #c62828; font-size: 13px; margin-top: 8px; }
+    .success-msg { color: #2e7d32; font-size: 13px; margin-top: 8px; }
+
+    .plan-actions { display: flex; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #f0f0f0; }
+    .accepted-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .accepted-chip { background: #e8f5e9; color: #2e7d32; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login">
+  <div class="login-card">
+    <h1>Meopel Admin</h1>
+    <p>Enter your admin key to continue</p>
+    <div class="form-group">
+      <label>Admin Key</label>
+      <input type="password" id="keyInput" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <div id="loginError" class="error-msg"></div>
+    <button class="btn-primary btn-full" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app">
+  <header>
+    <h1>Meopel Admin</h1>
+    <span id="headerSub"></span>
+    <button class="btn-cancel btn-sm logout-btn" onclick="logout()">Sign out</button>
+  </header>
+  <main>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('requests')">Join Requests</button>
+      <button class="tab" onclick="showTab('occasions')">Recurring Events</button>
+    </div>
+
+    <!-- Join Requests Tab -->
+    <div id="tab-requests">
+      <div id="plansContainer" class="loading">Loading plans...</div>
+    </div>
+
+    <!-- Occasions Tab -->
+    <div id="tab-occasions" style="display:none">
+      <!-- Create form -->
+      <div class="plan-card" style="margin-bottom:24px">
+        <div class="plan-title" style="margin-bottom:16px">New Recurring Event</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Activity</label>
+            <input type="text" id="f-activity" placeholder="e.g. Drinks">
+          </div>
+          <div class="form-group">
+            <label>Budget</label>
+            <select id="f-budget">
+              <option value="budget-friendly">Budget-friendly</option>
+              <option value="mid-range">Mid-range</option>
+              <option value="splurge">Splurge</option>
+            </select>
+          </div>
+          <div class="form-group form-full">
+            <label>Place</label>
+            <input type="text" id="f-place" placeholder="e.g. Bob's Bar, Koramangala">
+          </div>
+          <div class="form-group">
+            <label>Recurrence</label>
+            <select id="f-recurrence">
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="weekdays">Weekdays</option>
+              <option value="weekends">Weekends</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="date" id="f-startDate">
+          </div>
+        </div>
+        <div id="occasionMsg"></div>
+        <button class="btn-primary btn-full" onclick="createOccasion()">Create Event</button>
+      </div>
+
+      <!-- List -->
+      <div id="occasionsContainer" class="loading">Loading events...</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const SERVER = 'http://local.meopel.com:3000';
+let adminKey = '';
+
+// ── Auth ───────────────────────────────────────────────────────────────────────
+function doLogin() {
+  const key = document.getElementById('keyInput').value.trim();
+  if (!key) return;
+  adminKey = key;
+  document.getElementById('loginError').textContent = '';
+  loadPlans().then(() => {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('headerSub').textContent = SERVER;
+    loadOccasions();
+  }).catch(() => {
+    adminKey = '';
+    document.getElementById('loginError').textContent = 'Invalid admin key or server unreachable';
+  });
+}
+
+function logout() {
+  adminKey = '';
+  document.getElementById('login').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('keyInput').value = '';
+}
+
+// ── Tabs ───────────────────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-requests').style.display = name === 'requests' ? 'block' : 'none';
+  document.getElementById('tab-occasions').style.display = name === 'occasions' ? 'block' : 'none';
+}
+
+// ── API helpers ────────────────────────────────────────────────────────────────
+async function api(method, path, body) {
+  const res = await fetch(`${SERVER}${path}`, {
+    method,
+    headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.message);
+  return data;
+}
+
+// ── Join Requests ──────────────────────────────────────────────────────────────
+async function loadPlans() {
+  const data = await api('GET', '/admin/api/plans');
+  renderPlans(data.data);
+}
+
+function renderPlans(plans) {
+  const el = document.getElementById('plansContainer');
+  if (!plans.length) { el.innerHTML = '<div class="empty">No system plans with pending requests</div>'; return; }
+
+  el.innerHTML = plans.map(plan => {
+    const pending = plan.joinRequests.filter(r => r.status === 'pending');
+    const accepted = plan.joinRequests.filter(r => r.status === 'accepted');
+    const time = new Date(plan.time);
+    const timeStr = time.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+      + ' ' + time.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
+    return `
+      <div class="plan-card" id="plan-${plan._id}">
+        <div class="plan-header">
+          <div class="plan-title">${plan.activity}</div>
+          <span class="badge badge-${plan.status}">${plan.status}</span>
+        </div>
+        <div class="plan-meta">
+          <span>📍 ${plan.place}</span>
+          <span>🕐 ${timeStr}</span>
+          <span>💰 ${plan.budget}</span>
+          <span>👥 ${plan.acceptedJoiners.length}${plan.maxJoiners > 0 ? '/' + plan.maxJoiners : ''} accepted</span>
+        </div>
+
+        ${accepted.length ? `
+          <div class="section-label">Accepted (${accepted.length})</div>
+          <div class="accepted-list" style="margin-bottom:16px">
+            ${accepted.map(r => `<span class="accepted-chip">${r.user?.name || 'Unknown'}</span>`).join('')}
+          </div>` : ''}
+
+        ${pending.length ? `
+          <div class="section-label">Pending Requests (${pending.length})</div>
+          ${pending.map(r => `
+            <div class="request-row" id="req-${r._id}">
+              <div class="avatar">${(r.user?.name || '?')[0].toUpperCase()}</div>
+              <div class="request-info">
+                <div class="request-name">${r.user?.name || 'Unknown'}, ${r.user?.age || ''} • ${r.user?.gender || ''}</div>
+                <div class="request-sub">${r.user?.phone || ''}</div>
+              </div>
+              <button class="btn-accept btn-sm" onclick="respond('${plan._id}', '${r._id}', 'accepted')">Accept</button>
+              <button class="btn-reject btn-sm" onclick="respond('${plan._id}', '${r._id}', 'rejected')" style="margin-left:6px">Reject</button>
+            </div>`).join('')}` : `<div style="color:#888;font-size:13px">No pending requests</div>`}
+
+        <div class="plan-actions">
+          <button class="btn-cancel btn-sm" onclick="cancelPlan('${plan._id}')">Cancel Plan</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function respond(planId, requestId, status) {
+  try {
+    await api('PUT', `/admin/api/plans/${planId}/requests/${requestId}`, { status });
+    await loadPlans();
+  } catch (e) { alert(e.message); }
+}
+
+async function cancelPlan(planId) {
+  if (!confirm('Cancel this plan? All members will be notified.')) return;
+  try {
+    await api('DELETE', `/admin/api/plans/${planId}`);
+    await loadPlans();
+  } catch (e) { alert(e.message); }
+}
+
+// ── Occasions ──────────────────────────────────────────────────────────────────
+async function loadOccasions() {
+  const data = await api('GET', '/admin/api/occasions');
+  renderOccasions(data.data);
+}
+
+function renderOccasions(occasions) {
+  const el = document.getElementById('occasionsContainer');
+  if (!occasions.length) { el.innerHTML = '<div class="empty">No recurring events yet</div>'; return; }
+
+  el.innerHTML = occasions.map(o => `
+    <div class="plan-card">
+      <div class="plan-header">
+        <div class="plan-title">${o.activity}</div>
+        <span class="badge ${o.isActive ? 'badge-open' : 'badge-matched'}">${o.isActive ? 'Active' : 'Paused'}</span>
+      </div>
+      <div class="plan-meta">
+        <span>📍 ${o.place}</span>
+        <span>🔄 ${o.recurrence}</span>
+        <span>💰 ${o.budget}</span>
+      </div>
+      <div class="plan-actions">
+        <button class="btn-${o.isActive ? 'cancel' : 'accept'} btn-sm"
+          onclick="toggleOccasion('${o._id}', ${!o.isActive})">
+          ${o.isActive ? 'Pause' : 'Activate'}
+        </button>
+        <button class="btn-reject btn-sm" onclick="deleteOccasion('${o._id}')">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+async function createOccasion() {
+  const msgEl = document.getElementById('occasionMsg');
+  msgEl.textContent = '';
+  const body = {
+    activity: document.getElementById('f-activity').value.trim(),
+    place: document.getElementById('f-place').value.trim(),
+    budget: document.getElementById('f-budget').value,
+    recurrence: document.getElementById('f-recurrence').value,
+    startDate: document.getElementById('f-startDate').value,
+  };
+  if (!body.activity || !body.place) { msgEl.className = 'error-msg'; msgEl.textContent = 'Activity and place are required'; return; }
+  try {
+    await api('POST', '/admin/api/occasions', body);
+    msgEl.className = 'success-msg'; msgEl.textContent = 'Event created!';
+    ['f-activity', 'f-place'].forEach(id => document.getElementById(id).value = '');
+    await loadOccasions();
+  } catch (e) { msgEl.className = 'error-msg'; msgEl.textContent = e.message; }
+}
+
+async function toggleOccasion(id, isActive) {
+  try { await api('PUT', `/admin/api/occasions/${id}`, { isActive }); await loadOccasions(); }
+  catch (e) { alert(e.message); }
+}
+
+async function deleteOccasion(id) {
+  if (!confirm('Delete this recurring event? All future instances will be cancelled.')) return;
+  try { await api('DELETE', `/admin/api/occasions/${id}`); await loadOccasions(); }
+  catch (e) { alert(e.message); }
+}
+</script>
+</body>
+</html>
