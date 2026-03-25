@@ -112,9 +112,49 @@
     <section class="contact">
       <div class="container">
         <h2>Get in touch</h2>
-        <p>Questions, feedback, or want an invite? Email us at <a href="mailto:meopel.app@gmail.com">meopel.app@gmail.com</a></p>
+        <p>Questions, feedback, or want an invite?</p>
+        <form class="feedback-form" id="feedbackForm">
+          <textarea id="feedbackMessage" placeholder="What's on your mind?" rows="4" required></textarea>
+          <button type="submit" id="feedbackBtn">Send feedback</button>
+          <p id="feedbackStatus" class="feedback-status"></p>
+        </form>
+        <p class="contact-email">Or email us at <a href="mailto:meopel.app@gmail.com">meopel.app@gmail.com</a></p>
       </div>
     </section>
+
+    <script>
+      document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const message = document.getElementById('feedbackMessage').value.trim();
+        const btn = document.getElementById('feedbackBtn');
+        const status = document.getElementById('feedbackStatus');
+        if (!message) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        status.textContent = '';
+        try {
+          const res = await fetch('https://prod.meopel.com/api/app-feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message, source: 'website' }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            status.textContent = 'Thanks! We\'ll get back to you.';
+            status.className = 'feedback-status success';
+            document.getElementById('feedbackMessage').value = '';
+          } else {
+            throw new Error(data.message || 'Something went wrong');
+          }
+        } catch (err) {
+          status.textContent = err.message;
+          status.className = 'feedback-status error';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Send feedback';
+        }
+      });
+    </script>
 
   </main>
 
