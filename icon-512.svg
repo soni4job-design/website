@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="100" fill="#ffffff"/>
+  <!-- Pin 1 (left, lighter purple) -->
+  <g transform="translate(100, 60)">
+    <path d="M156 20 C88 20 30 78 30 146 C30 246 156 420 156 420 C156 420 282 246 282 146 C282 78 224 20 156 20Z" fill="#9C96FF"/>
+    <circle cx="156" cy="146" r="56" fill="white"/>
+  </g>
+  <!-- Pin 2 (right, main purple) -->
+  <g transform="translate(230, 60)">
+    <path d="M156 20 C88 20 30 78 30 146 C30 246 156 420 156 420 C156 420 282 246 282 146 C282 78 224 20 156 20Z" fill="#6C63FF"/>
+    <circle cx="156" cy="146" r="56" fill="white"/>
+  </g>
+</svg>

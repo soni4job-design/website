@@ -240,6 +240,56 @@ nav a:hover { color: #6C63FF; }
   flex: 0 0 auto;
 }
 
+/* Safety */
+.safety {
+  background: #fff;
+  padding: 72px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.safety-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.safety-card {
+  background: #fafafa;
+  border: 1px solid #efefef;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.safety-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  background: #efefef;
+}
+
+.safety-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 20px 24px 8px;
+}
+
+.safety-card p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.65;
+  margin: 0 24px 24px;
+}
+
+@media (max-width: 640px) {
+  .safety-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 /* Contact */
 .contact {
   padding: 64px 0;
