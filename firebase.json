@@ -5,6 +5,10 @@
       "firebase.json",
       ".firebaserc",
       "README.md"
+    ],
+    "rewrites": [
+      { "source": "/founder", "destination": "/founder.html" },
+      { "source": "/download", "destination": "/download.html" }
     ]
   }
 }

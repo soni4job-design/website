@@ -14,6 +14,8 @@
       <nav>
         <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
+        <a href="download.html">Download</a>
+        <a href="founder.html">Founder</a>
       </nav>
     </div>
   </header>
@@ -144,6 +146,31 @@
         <p class="contact-email">Or email us at <a href="mailto:meopel.app@gmail.com">meopel.app@gmail.com</a></p>
       </div>
     </section>
+
+    <script>
+      function toggleDownloadMenu(e) {
+        if (e.preventDefault) e.preventDefault();
+        var btn = e.target || e;
+        var menu = document.getElementById('downloadMenu');
+        var open = menu.style.display === 'flex';
+        menu.style.display = open ? 'none' : 'flex';
+        btn.textContent = open ? 'Download ▾' : 'Download ▴';
+        if (open) document.getElementById('androidNote').style.display = 'none';
+      }
+      function toggleAndroidNote(btn) {
+        var note = document.getElementById('androidNote');
+        var visible = note.style.display === 'block';
+        note.style.display = visible ? 'none' : 'block';
+        btn.textContent = visible ? 'Android' : 'Android ✕';
+      }
+      document.addEventListener('click', function(e) {
+        var menu = document.getElementById('downloadMenu');
+        if (menu.style.display === 'flex' && !menu.contains(e.target) && !e.target.classList.contains('header-download-btn')) {
+          menu.style.display = 'none';
+          document.querySelector('.header-download-btn').textContent = 'Download ▾';
+        }
+      });
+    </script>
 
     <script>
       document.getElementById('feedbackForm').addEventListener('submit', async function(e) {

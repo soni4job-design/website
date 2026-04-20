@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download Meopel</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .download-hero {
+      background: linear-gradient(135deg, #6C63FF 0%, #4B44CC 100%);
+      padding: 64px 0;
+      text-align: center;
+    }
+    .download-hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .download-hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.8);
+    }
+    .download-body {
+      background: #fafafa;
+      padding: 64px 0;
+    }
+    .download-cards {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .download-card {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 16px;
+      padding: 36px 32px;
+      width: 240px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .download-card .platform-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+    .download-card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+    .download-card p {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .dl-btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .dl-btn-primary {
+      background: #6C63FF;
+      color: #fff;
+    }
+    .dl-btn-primary:hover { background: #574fd6; }
+    .dl-btn-secondary {
+      background: #f4f3ff;
+      color: #6C63FF;
+      border: none;
+      font-family: inherit;
+    }
+    .dl-btn-secondary:hover { background: #e8e6ff; }
+    .dl-btn-disabled {
+      background: #f0f0f0;
+      color: #bbb;
+      cursor: default;
+    }
+    .android-note {
+      display: none;
+      margin-top: 14px;
+      font-size: 12px;
+      color: #777;
+      line-height: 1.6;
+    }
+    .android-note a { color: #6C63FF; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <a href="index.html"><img src="logo.svg" alt="Meopel" class="logo" /></a>
+      <nav>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="download.html">Download</a>
+        <a href="founder.html">Founder</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="download-hero">
+      <div class="container">
+        <h1>Get Meopel</h1>
+        <p>Available on web and Android. iOS coming soon.</p>
+      </div>
+    </section>
+
+    <section class="download-body">
+      <div class="container">
+        <div class="download-cards">
+
+          <div class="download-card">
+            <div class="platform-icon">🌐</div>
+            <h2>Web</h2>
+            <p>Use Meopel directly in your browser — no install needed.</p>
+            <a href="https://app.meopel.com/#/splash" class="dl-btn dl-btn-primary" target="_blank" rel="noopener">Open Web App</a>
+          </div>
+
+          <div class="download-card">
+            <div class="platform-icon">🤖</div>
+            <h2>Android</h2>
+            <p>Email us and we'll send you the Play Store link.</p>
+            <button class="dl-btn dl-btn-secondary" onclick="toggleAndroidNote(this)">Get Android App</button>
+            <div class="android-note" id="androidNote">
+              Email <a href="mailto:meopel.app@gmail.com?subject=Send me the Android app link">meopel.app@gmail.com</a> from your Android phone and we'll send you the link.
+            </div>
+          </div>
+
+          <div class="download-card">
+            <div class="platform-icon">🍎</div>
+            <h2>iOS</h2>
+            <p>iPhone app is on the way.</p>
+            <span class="dl-btn dl-btn-disabled">Coming Soon</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>© 2026 Meopel</span>
+      <nav>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    function toggleAndroidNote(btn) {
+      var note = document.getElementById('androidNote');
+      var visible = note.style.display === 'block';
+      note.style.display = visible ? 'none' : 'block';
+      btn.textContent = visible ? 'Get Android App' : 'Get Android App ✕';
+    }
+  </script>
+
+</body>
+</html>
