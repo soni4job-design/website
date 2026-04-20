@@ -639,3 +639,32 @@ footer nav a:hover { color: #6C63FF; }
 .feedback-status.error { color: #c0392b; }
 
 .contact-email { margin-top: 16px; font-size: 14px; color: #999; }
+
+.whatsapp-links {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  background: #25D366;
+  color: #fff;
+}
+
+.whatsapp-btn:hover { background: #1ebe5d; }
+
+.whatsapp-btn-women {
+  background: #a855f7;
+}
+
+.whatsapp-btn-women:hover { background: #9333ea; }
